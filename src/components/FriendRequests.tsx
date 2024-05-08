@@ -28,6 +28,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({ sessionId, incomingFriendRequ
 			socket.removeListener(friendRequestEventListener(sessionId), onFriendRequest);
 			disconnect();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sessionId]);
 	
 	const acceptFriend = async (senderId: string) => {		

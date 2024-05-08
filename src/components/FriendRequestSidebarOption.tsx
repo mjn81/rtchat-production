@@ -36,6 +36,7 @@ const FriendRequestSidebarOption: FC<FriendRequestSidebarOptionProps> = ({
       socket.removeListener(changeFriendRequestStatusEventListener(sessionId));
       disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sessionId]);
   return (
 		<a

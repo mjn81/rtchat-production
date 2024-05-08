@@ -19,13 +19,13 @@ import { getChatRoomMessages } from '@/helpers/query/message';
 import { ChatContextProvider } from '@/context/ChatContext';
 import { ChatContextMessage } from '@/types/types';
 
-interface PageProps extends PropsWithChildren {
+interface PageProps {
 	params: {
 		roomId: string;
 	};
 }
 
-const Page: FC<PageProps> = async ({ children, params: { roomId } }) => {
+const Page: FC<PageProps> = async ({ params: { roomId } }) => {
 	const session = await getServerSession(authOptions);
 	const chatRoomDetails = await db?.query.chatRooms.findFirst({
 		where: (chatRoom) => eq(chatRoom.id, roomId),
