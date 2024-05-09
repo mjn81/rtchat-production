@@ -20,6 +20,7 @@ export const useSocketStore = create<Store>()((set, get) => ({
     }
     const socket = io(`${SOCKET_URL}`, {
       secure: true,
+      protocols: ['websocket', 'polling', 'flashsocket'],
     });
     set({ socket, is_connected: true, connection_references: 1 });
     return socket;
