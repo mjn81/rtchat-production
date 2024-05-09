@@ -18,6 +18,7 @@ export const useSocketStore = create<Store>()((set, get) => ({
       set({ connection_references: get().connection_references + 1 });
       return initial_socket;
     }
+    console.log(SOCKET_URL);
     const socket = io(`${SOCKET_URL}`, {
       secure: true,
       protocols: ['websocket', 'polling', 'flashsocket'],
