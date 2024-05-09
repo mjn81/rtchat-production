@@ -18,7 +18,9 @@ export const useSocketStore = create<Store>()((set, get) => ({
       set({ connection_references: get().connection_references + 1 });
       return initial_socket;
     }
-		const socket = io(`${SOCKET_URL}`);
+    const socket = io(`${SOCKET_URL}`, {
+      secure: true,
+    });
     set({ socket, is_connected: true, connection_references: 1 });
     return socket;
   },
