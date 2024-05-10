@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
 		<html lang="en">
-			<body className={cn(inter.className, 'antialiased font-sans')}>
+			<body className={cn(inter.className, 'antialiased font-sans w-screen overflow-x-hidden')}>
 				<Providers>{children}</Providers>
 			</body>
 		</html>

@@ -93,21 +93,21 @@ export default async function Home() {
 
 			<section
 				id="coming-soon"
-				className="min-h-[calc(100vh-5rem)] bg-muted border-y-2 border-muted flex flex-col items-center py-16 px-4"
+				className="py-[15vh] bg-muted border-y-2 border-muted flex flex-col items-center px-4"
 			>
 				<h2 className="mx-auto text-center text-foreground font-bold text-4xl  lg:text-5xl tracking-tight">
 					Coming Soon!
 				</h2>
-				<p className="text-center mt-5 mb-3 text-muted-foreground tracking-tight leading-6 text-sm lg:text-base xl:text-lg">
+				<p className="text-center mt-5 mb-[5vh] text-muted-foreground tracking-tight leading-6 text-sm lg:text-base xl:text-lg">
 					See What Exciting New Features and Enhancements We&apos;re Bringing to
 					You Soon!
 				</p>
-				<div className="flex-1 grid grid-cols-1 place-items-center lg:grid-cols-3 gap-6 mt-10">
+				<div className="flex-grow grid grid-cols-1 place-items-center lg:grid-cols-3 gap-6 mt-10">
 					{COMING_SOON_FEATURES.map(
 						({ title, description, id, icon: Icon }) => (
 							<div
 								key={id}
-								className="bg-background p-6 xl:p-8 2xl:p-10 items-center col-span-1 overflow-hidden max-w-sm border border-border rounded-lg shadow-lg"
+								className="bg-background p-6 xl:p-8 2xl:p-10 items-center col-span-1 overflow-hidden max-w-sm h-max border border-border rounded-lg shadow-lg"
 							>
 								<section className="flex items-center gap-2 mb-3">
 									{<Icon className="text-primary" />}
