@@ -75,6 +75,10 @@
   @apply bg-primary text-white;
 }
 
+* {
+  scroll-behavior: smooth !important;
+}
+
 .login-image {
   background-image: url('/rt_final.webp');
   background-size: cover;

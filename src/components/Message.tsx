@@ -3,8 +3,7 @@ import { type Message } from '@/db/schema';
 import { cn, getInitials } from '@/lib/utils';
 import React from 'react';
 import md from 'markdown-it';
-import Image from 'next/image';
-import { format } from 'date-fns';
+import { format, subDays, formatDistanceToNow } from 'date-fns';
 import { ChatContextMessage } from '@/types/types';
 import { Check, CheckCheck } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
@@ -14,6 +13,16 @@ const formatTimestamp = (timestamp: Date) => {
 	return format(timestamp, 'h:mm a');
 };
 
+const formatSectionDiffDate = (date: Date) => {
+	// if today or yesterday, use formatDistance
+	// else use MMMM d, yyyy
+	if (subDays(new Date(), 1) < date) {
+		return formatDistanceToNow(date, {
+			addSuffix: true,
+		});
+	}
+	return format(date, 'MMMM d, yyyy', {});
+};
 interface MessageProps {
 	message: ChatContextMessage;
 	chatPartnersMap: Map<string, User>;
@@ -22,7 +31,16 @@ interface MessageProps {
 	isDateDifferent: boolean;
 }
 const Message = React.forwardRef<HTMLDivElement, MessageProps>(
-	({ message, chatPartnersMap, user, hasNextMessageFromSameUser , isDateDifferent }, ref) => {
+	(
+		{
+			message,
+			chatPartnersMap,
+			user,
+			hasNextMessageFromSameUser,
+			isDateDifferent,
+		},
+		ref
+	) => {
 		const isCurrentUser = message.sender === user.id;
 		const partner = !isCurrentUser
 			? chatPartnersMap.get(message.sender)
@@ -38,7 +56,7 @@ const Message = React.forwardRef<HTMLDivElement, MessageProps>(
 					<div className="text-center flex items-center gap-2 text-muted-foreground mb-1.5">
 						<span className="border-t border-gray-100 flex-1" />
 						<span className="px-2 py-0.5 bg-gray-200/30 border border-gray-200 backdrop-blur-xl rounded-full text-[0.55rem] ">
-							{format(message.createdAt, 'MMMM d, yyyy')}
+							{formatSectionDiffDate(message.createdAt)}
 						</span>
 						<span className="border-t border-gray-100 flex-1" />
 					</div>
