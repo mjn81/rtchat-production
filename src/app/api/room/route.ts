@@ -10,11 +10,16 @@ import {
 	updateRoomValidator,
 } from '@/lib/validations/room';
 import { newRoomEventListener, push, updateRoomEventListener } from "@/lib/utils";
+import { getIpAddr, rateLimiter } from "@/lib/rateLimit";
+import { RateLimiterRes } from "rate-limiter-flexible";
 
 // realtime complete
 // create room
 export async function POST(req: Request) {
-  try {
+	try {
+		const ip = getIpAddr(req);
+		await rateLimiter.consume(ip, 1);
+
 		const body = await req.json();
 		const { name, url } = createRoomValidator.parse(body);
 
@@ -62,12 +67,16 @@ export async function POST(req: Request) {
 		await push(chat, newRoomEventListener(session.user.id));
 		return new Response('OK');
 	} catch (error) {
-    if (error instanceof z.ZodError) {
+
+		if (error instanceof RateLimiterRes) {
+			return new Response('Too many request.', { status: 429 });
+		}
+
+		if (error instanceof z.ZodError) {
       return new Response('Invalid request payload.', {
         status: 422
       })
 		}
-		console.log(error);
 		return new Response('Invalid request.', {
       status: 400
     })
@@ -78,7 +87,9 @@ export async function POST(req: Request) {
 // realtime complete
 // admin removes room
 export async function DELETE(req: Request) {
-  try {
+	try {
+		const ip = getIpAddr(req);
+		await rateLimiter.consume(ip, 1);
 		const body = await req.json();
 		const { id: idToRemove } = z.object({ id: z.string() }).parse(body);
 
@@ -110,6 +121,9 @@ export async function DELETE(req: Request) {
 
 		return new Response('OK');
 	} catch (error) {
+		if (error instanceof RateLimiterRes) {
+			return new Response('Too many request.', { status: 429 });
+		}
     if (error instanceof z.ZodError) {
       return new Response('Invalid request payload.', {
         status: 422
@@ -126,6 +140,8 @@ export async function DELETE(req: Request) {
 // update room
 export async function PUT(req: Request) {
 	try {
+		const ip = getIpAddr(req);
+		await rateLimiter.consume(ip, 1);
 		const body = await req.json();
 		const { name, id: idToUpdate } = updateRoomValidator.parse(body);
 
@@ -164,6 +180,9 @@ export async function PUT(req: Request) {
 		},updateRoomEventListener(idToUpdate))
 		return new Response('OK');
 	} catch (error) {
+		if (error instanceof RateLimiterRes) {
+			return new Response('Too many request.', { status: 429 });
+		}
 		if (error instanceof z.ZodError) {
 			return new Response('Invalid request payload.', {
 				status: 422,

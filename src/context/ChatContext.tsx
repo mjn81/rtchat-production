@@ -71,7 +71,7 @@ export const ChatContextProvider: FC<Props> = ({ children }) => {
 				chatRoomId,
 			});
 
-			const encryptedMessage = encryptMessage(validatedMessage.text);
+			const encryptedMessage = await encryptMessage(validatedMessage.text);
 			const response = await axios.post<Message>(
 				'/api/message',
 				validatedMessage

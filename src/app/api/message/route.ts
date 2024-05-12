@@ -63,9 +63,9 @@ export async function POST(req: Request) {
 			sender: session.user as User,
 		};
 		// send new Message event to all members of the chat room
-		// send new Message event to all members of the chat room
 		
 		const newMessageEventListenerList = chatRoomMembers.map((member) => newMessageEventListener(member.userId));
+		
 		await pushGroup(
 			notifMessage,
 			newMessageEventListenerList
@@ -81,6 +81,8 @@ export async function POST(req: Request) {
 				status: 422,
 			});
 		}
+
+		console.log(error);
 		return new Response('Invalid request.', {
 			status: 400,
 		});

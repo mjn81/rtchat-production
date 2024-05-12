@@ -28,9 +28,12 @@ const Message = React.forwardRef<HTMLDivElement, MessageProps>(
 			? chatPartnersMap.get(message.sender)
 			: undefined;
 		/// decrypt message and render markdown
-		const text = md().render(message.text);
 		return (
-			<div ref={ref} className='max-w-full' key={`${message.id}-${message.updatedAt}`}>
+			<div
+				ref={ref}
+				className="max-w-full"
+				key={`${message.id}-${message.updatedAt}`}
+			>
 				{isDateDifferent && (
 					<div className="text-center flex items-center gap-2 text-muted-foreground mb-1.5">
 						<span className="border-t border-gray-100 flex-1" />
@@ -62,13 +65,17 @@ const Message = React.forwardRef<HTMLDivElement, MessageProps>(
 						>
 							<p
 								className={cn(
-									'p-0 m-0 whitespace-wrap max-w-full prose text-white prose-a:text-white prose-headings:text-white',
+									'p-0 m-0 whitespace-wrap max-w-full text-white prose',
 									{
-										'text-white': isCurrentUser,
-										'text-gray-900': !isCurrentUser,
+										'text-white prose-a:text-blue-200 hover:prose-a:text-blue-400 prose-headings:text-white':
+											isCurrentUser,
+										'text-gray-800 prose-a:text-blue-600 hover:prose-a:text-blue-800 prose-headings:text-gray-900':
+											!isCurrentUser,
 									}
 								)}
-								dangerouslySetInnerHTML={{ __html: text }}
+								dangerouslySetInnerHTML={{
+									__html: md().render(message.text),
+								}}
 							></p>
 						</span>
 						<div className="flex items-center gap-1.5 text-muted-foreground">

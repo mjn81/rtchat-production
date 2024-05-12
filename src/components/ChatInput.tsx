@@ -1,11 +1,17 @@
 'use client';
 
 import type { FC } from 'react';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Button } from './ui/button';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, SmilePlus } from 'lucide-react';
 import { ChatContext } from '@/context/ChatContext';
+import {
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+} from '@/components/ui/popover';
+import ReactEmoji, { EmojiStyle } from 'emoji-picker-react';
 
 interface ChatInputProps {
 	chatPartner?: User;
@@ -58,7 +64,34 @@ const ChatInput: FC<ChatInputProps> = ({
 						<div className="h-2 lg:h-9" />
 					</div>
 				</div>
-				<div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
+				<div className="absolute right-0 bottom-0 flex justify-between gap-2 py-1 pl-3 pr-2">
+					<Popover>
+						<div>
+							<PopoverTrigger asChild>
+								<Button
+									variant="ghost"
+									className="text-muted-foreground max-lg:w-6 max-lg:h-6 max-lg:rounded-full max-lg:p-0
+						max-lg:aspect-square"
+									type="button"
+								>
+									<SmilePlus />
+								</Button>
+							</PopoverTrigger>
+						</div>
+						<PopoverContent
+							sticky="always"
+							className="w-[350px] p-0 border-none bg-transparent shadow-none mr-1.5 min-[375px]:mr-5"
+							sideOffset={10}
+							side="top"
+						>
+							<ReactEmoji
+								onEmojiClick={(e) => handleChangeInput(input + e.emoji)}
+								emojiStyle={EmojiStyle.APPLE}
+								skinTonesDisabled
+								className="shadow-md"
+							/>
+						</PopoverContent>
+					</Popover>
 					<div className="flex-shrink-0">
 						<Button
 							className="max-lg:w-6 max-lg:h-6 max-lg:rounded-full max-lg:p-0 max-lg:aspect-square"

@@ -61,7 +61,7 @@ export const isUserPrivateChat = (roomName: string) => roomName.includes('$');
 export const getFriendFromChatRoomName = (roomName: string, userId: string) =>
 	roomName.split('$').find((id) => id !== userId) as string;
 
-/// TODO: make this into markdown
+// TODO: make this into markdown
 export const requestFriendToJoinMessage = (url: string) =>
 	`## Join Our Chatroom!
 Hi, Hope you're good! We've got this cool chatroom going on and I thought you might want to join in. [Just click here](${url}) to jump in!
@@ -81,6 +81,7 @@ export const getCurrentChatId = (currentPath: string | undefined | null) => {
 
 export const createJoinRoomURL = (uri: string) =>
 	`${process.env.NEXT_PUBLIC_BASE_URL}/join/${uri}`;
+
 /// takes the url and returns shortened version with ****_**** pattern
 export const createProtectedText = (text: string) => {
 	const [first, second] = text.split('_');

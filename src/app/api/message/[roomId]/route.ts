@@ -6,6 +6,8 @@ import {
 import { getServerSession } from 'next-auth';
 import { ZodError, z } from 'zod';
 import { getChatRoomMessages } from '@/helpers/query/message';
+import { getIpAddr, rateLimiter } from '@/lib/rateLimit';
+import { RateLimiterRes } from 'rate-limiter-flexible';
 
 type Query = {
 	params: {
@@ -17,6 +19,8 @@ export async function GET(
 	req: Request,
 	{ params: { roomId: invalidRoomId } }: Query
 ) {
+	const ip = getIpAddr(req);
+	await rateLimiter.consume(ip, 1);
 	const session = await getServerSession(authOptions);
 	if (!session) return new Response('Unauthorized', { status: 401 });
 	// get cursor and limit from query params
@@ -39,6 +43,9 @@ export async function GET(
 
 		return Response.json(messages, { status: 200 });
 	} catch (error) {
+		if (error instanceof RateLimiterRes) {
+			return new Response('Too many request', { status: 429 });
+		}
 		if (error instanceof ZodError) {
 			return new Response('Invalid request payload', { status: 400 });
 		}
