@@ -2,17 +2,14 @@ import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import Providers from '@/components/Providers';
-import { cn } from "@/lib/utils";
+import { cn, constructMetaData } from "@/lib/utils";
 
 const inter = Roboto({
 	subsets: ['latin'],
 	weight: ['300', '400', '500', '700', '900'],
 });
 
-export const metadata: Metadata = {
-  title: "RTChat",
-	description: "Real-time chatting app",
-};
+export const metadata: Metadata = constructMetaData();
 
 export default function RootLayout({
   children,

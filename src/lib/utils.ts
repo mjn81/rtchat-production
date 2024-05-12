@@ -1,6 +1,8 @@
+import { CREATOR_INFO } from '@/constants/metadata';
 import { SOCKET_API_URL } from '@/constants/socket';
 import axios from 'axios';
 import { type ClassValue, clsx } from 'clsx';
+import { Metadata } from 'next';
 import { twMerge } from 'tailwind-merge';
 
 export const push = async (data: any, id: string) => {
@@ -105,3 +107,40 @@ export const getInitials = (name: string) =>
 		.split(' ')
 		.map((word) => word[0])
 		.join('').toLocaleUpperCase().slice(0, 3);
+
+export const constructMetaData = ({
+	title = 'RTChat - Realtime chatting made easy',
+	description = 'Chat with Ease, Stay Anonymous. Enjoy Real-Time, Secure Conversations Worldwide—Connect, Communicate, and Remain Confidential, Anytime, Anywhere.',
+	image = '/thumbnail.png',
+	icons = '/favicon.png',
+	noIndex = false,
+}: MetadataConstructor = {}): Metadata => {
+	return {
+		title,
+		description,
+		openGraph: {
+			title,
+			description,
+			images: [
+				{
+					url: image,
+				},
+			],
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title,
+			description,
+			images: [image],
+			creator: CREATOR_INFO.twitter,
+		},
+		icons,
+		metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
+		...(noIndex && {
+			robots: {
+				index: false,
+				follow: false,
+			},
+		}),
+	};
+};
